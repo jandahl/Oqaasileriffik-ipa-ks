@@ -46,7 +46,7 @@ function kal_detect_from($token) {
 	}
 
 	while (preg_match('/[eo]+[^eorq]/u', $token, $m, PREG_OFFSET_CAPTURE, $from)) {
-		$from = max($from, $m[1][1]+1);
+		$from = max($from, $m[0][1]+1);
 	}
 
 	$last = mb_substr($token, -1);
@@ -55,7 +55,7 @@ function kal_detect_from($token) {
 	}
 
 	if (preg_match('/[^aefgijklmnopqrstuvŋ][aefgijklmnopqrstuvŋ]+$/u', $token, $m, PREG_OFFSET_CAPTURE, $from)) {
-		$from = max($from, $m[1][1]+1);
+		$from = max($from, $m[0][1]+1);
 	}
 
 	if (preg_match_all('/([qwrtpsdfghjklzxcvbnmŋ])([qwrtpsdfghjklzxcvbnmŋ])/u', $token, $ms, PREG_SET_ORDER|PREG_OFFSET_CAPTURE, $from)) {
