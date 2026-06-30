@@ -17,6 +17,7 @@ function run() {
 	// --- buildIndex(): transcription, filtering, dedup, shape ---
 	const doc = buildIndex([
 		'qimmeq', 'illu', 'nuna', 'atuarpoq', 'oqaatsit', 'aasiaat',
+		'ap',              // single syllable: IPA == spelling, still kept
 		'qimmeq',          // duplicate -> collapsed
 		"a'a",             // apostrophe -> skipped (engine bails)
 		'2',               // digit -> skipped
@@ -29,6 +30,9 @@ function run() {
 
 	// Stress/syllabification-only results are kept (not dropped as no-ops).
 	assert.strictEqual(doc.ipa.nuna, 'nu na', 'syllabified-only kept');
+
+	// A single-syllable word whose IPA equals its spelling is kept, not dropped.
+	assert.strictEqual(doc.ipa.ap, 'ap', 'verbatim single-syllable kept');
 
 	// Markup is fully converted: no raw tags survive, modifiers present.
 	for (const [w, ipa] of Object.entries(doc.ipa)) {

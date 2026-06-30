@@ -61,10 +61,11 @@ function buildIndex(lines) {
 		// (kal_ipa bails on anything else); skip phrases, apostrophes, digits.
 		if (!/^[a-zæøåŋ]+$/i.test(lc)) continue;
 		const out = clean(kal_ipa_words(lc));
-		// Drop only genuine no-ops (engine returned the input verbatim). A real
-		// transcription always differs — at minimum it adds stress marks and
-		// syllable spaces — so stress/syllabification-only results are kept.
-		if (!out || out === lc) continue;
+		// Keep every transcription, including the rare single-syllable word whose
+		// IPA equals its spelling — that is still valid pronunciation info. Only
+		// empty output (which the alphabetic pre-filter should already preclude)
+		// is dropped.
+		if (!out) continue;
 		ipa[lc] = out;
 	}
 
