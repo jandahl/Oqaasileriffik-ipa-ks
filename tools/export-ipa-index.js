@@ -42,8 +42,12 @@ function readInput() {
 	return raw.split(/\r?\n/);
 }
 
-function main() {
-	const lines = readInput();
+/**
+ * Build the normalized IPA index document from a list of raw input lines.
+ * Pure (no I/O) so it can be unit-tested directly.
+ * @param {string[]} lines
+ */
+function buildIndex(lines) {
 	/** @type {Record<string, string>} */
 	const ipa = {};
 	const seen = new Set();
@@ -66,7 +70,7 @@ function main() {
 
 	// No generated_at timestamp: keep the output deterministic so regenerating
 	// produces a clean (empty) git diff when the inputs are unchanged.
-	const doc = {
+	return {
 		meta: {
 			schema_version: '1.0',
 			generated_by: 'Oqaasileriffik-ipa-ks tools/export-ipa-index.js',
@@ -80,7 +84,15 @@ function main() {
 		},
 		ipa,
 	};
+}
+
+function main() {
+	const doc = buildIndex(readInput());
 	process.stdout.write(JSON.stringify(doc, null, '\t') + '\n');
 }
 
-main();
+if (require.main === module) {
+	main();
+}
+
+module.exports = { clean, buildIndex };
