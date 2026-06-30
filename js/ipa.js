@@ -218,3 +218,9 @@ if (typeof $ !== 'undefined') {
 		}
 	});
 }
+
+// Node (CommonJS) export guard — lets tooling reuse the engine headlessly.
+// No effect in the browser, where `module` is undefined.
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { kal_ipa, kal_ipa_words, ipa_kal_from, do_kal_ipa_raw };
+}
